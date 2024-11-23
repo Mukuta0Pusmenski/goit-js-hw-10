@@ -6,7 +6,8 @@ form.addEventListener('submit', function (event) {
   const delayInput = form.elements['delay'];
   const stateInput = form.elements['state'];
   
-  let delay = Number(delayInput.value);
+  const userDelay = Number(delayInput.value); // Зберігаємо введене користувачем значення
+  let delay = userDelay;
   const state = stateInput.value;
 
   if (delay < 1500) {
@@ -14,16 +15,16 @@ form.addEventListener('submit', function (event) {
   }
 
   createPromise(delay, state)
-    .then((delay) => {
+    .then(() => {
       iziToast.success({
         title: 'Success',
-        message: `✅ Fulfilled promise in ${delay}ms`,
+        message: `✅ Fulfilled promise in ${userDelay}ms`, // Використовуємо userDelay для повідомлення
       });
     })
-    .catch((delay) => {
+    .catch(() => {
       iziToast.error({
         title: 'Error',
-        message: `❌ Rejected promise in ${delay}ms`,
+        message: `❌ Rejected promise in ${userDelay}ms`, // Використовуємо userDelay для повідомлення
       });
     });
 
@@ -35,9 +36,9 @@ function createPromise(delay, state) {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (state === 'fulfilled') {
-        resolve(delay);
+        resolve();
       } else {
-        reject(delay);
+        reject();
       }
     }, delay);
   });
